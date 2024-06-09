@@ -20,6 +20,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    image: omar2023/lara101  
     links:
       - mysql
     depends_on:
