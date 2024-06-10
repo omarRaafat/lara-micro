@@ -6,8 +6,9 @@ use App\Models\User;
 use App\Models\Setting;
 use App\Observers\UserObserver;
 use App\Http\Services\TwilioService;
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -30,7 +31,8 @@ class AppServiceProvider extends ServiceProvider
         User::observe(new UserObserver());
       
              Cache::rememberForever('settings' , function(){
-                return Setting::pluck('value' , 'key');
+                if(Schema::hasTable('settings'))
+                    return Setting::pluck('value' , 'key');
             });
         
     }

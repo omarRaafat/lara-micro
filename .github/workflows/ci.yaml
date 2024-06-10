@@ -22,7 +22,7 @@ jobs:
       - name: build and push image to dockerhub
         env:
           REPO: ${{ secrets.DOCKER_HUB_REPO }}
-          TAG:  laramicro-v-${{ github.sha }}
+          TAG:  latest
         run: |
          docker-compose up -d 
          docker push $REPO:$TAG  
