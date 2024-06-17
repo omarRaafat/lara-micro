@@ -2,7 +2,7 @@ version: "3.2"
 services:
   mysql:
     image: mysql
-    container_name: mysql
+    container_name: mysql-server
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: 'dev'
@@ -14,13 +14,14 @@ services:
     volumes:
       - my-db:/var/lib/mysql
     networks:
-      - lara101        
+      - laraMicroNetwork        
       
-  lara101:
+  laraMicroApp:
     build:
       context: .
       dockerfile: Dockerfile
-    image: omar2023/lara101:latest  
+    image: omar2023/lara101:latest  # this is a tag for the docker file image php8.1-fpm
+    container_name: laraMicroApp
     links:
       - mysql
     depends_on:
@@ -28,10 +29,10 @@ services:
     ports:
       - 8080:80  
     networks:
-      - lara101
+      - laraMicroNetwork
 
 networks:
-  lara101:
+  laraMicroNetwork:
     driver: bridge
 volumes:
   my-db:

@@ -14,11 +14,11 @@ class CountrySeeder extends Seeder
     public function run(): void
     {
         Country::create([
-            'name' => json_encode([
+            'name' =>[
                 'ar' => 'مصر',
                 'en' => 'Egypt'
 
-            ]),
+            ],
             'code' => 'EG'
         ]);
     }

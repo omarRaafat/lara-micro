@@ -7,6 +7,7 @@ use App\Http\Controllers\DemoController;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\RolesPermissionController;
+use App\Http\Controllers\TestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,9 @@ use App\Http\Controllers\RolesPermissionController;
 
 Route::get('/demo', [DemoController::class, 'demo'])->name('demo');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::resource('tests' , TestController::class);
+Route::post('process' , [TestController::class , 'upload']);
+Route::delete('revert' , [TestController::class , 'revert']);
 
 Route::controller(StripePaymentController::class)->group(function(){
     Route::get('stripe', 'stripe');

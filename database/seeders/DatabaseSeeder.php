@@ -19,6 +19,11 @@ class DatabaseSeeder extends Seeder
         // Post::factory(5)->create();
         $this->call([
             // RolesPermissionsSeeder::class,
+            AreaSeeder::class,
+            CitySeeder::class,
+            CountrySeeder::class,
+            WarehouseSeeder::class,
+            WarehouseAreaSeeder::class,
             SettingSeeder::class
         ]
         );

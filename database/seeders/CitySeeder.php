@@ -22,7 +22,7 @@ class CitySeeder extends Seeder
                         ]),
                     'country_id' => 1
                 
-                ]
+                ],
                 [
                     'name' => json_encode([
                             'ar' => 'الجيزة',

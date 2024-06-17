@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Working with TMDb API in Laravel 9 - LaravelTuts</title>
+        <title> Laravel 9 - LaraMicro</title>
 
         <!-- Fonts -->
         <link href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -67,12 +67,7 @@
                     </div>
                 </div>
 
-                <div class="text-center text-sm text-gray-500 sm:text-center my-5">
-                    Tutorial By 
-                    <a href="https://laraveltuts.com" class="ml-1 underline">
-                        LaravelTuts.com
-                    </a>
-                </div>
+              
             </div>
         </div>
 
