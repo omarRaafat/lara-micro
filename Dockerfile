@@ -4,9 +4,6 @@ WORKDIR /laraMicro
 
 ADD . .
 
-#laravel required env file for deploying
-COPY .env.example .env
-
 RUN apt-get update && apt-get install -y mariadb-server \
 nano \
 build-essential \
@@ -44,9 +41,12 @@ RUN apt-get clean
 # install laravel dependencies and packages via composer
 RUN composer install --ignore-platform-reqs --no-interaction --no-scripts --no-progress
 
+#laravel required env file for deploying
+COPY .env.docker .env
+
 # fix 301 forbidden permission to laravel storage and caches for read and write
-RUN  chgrp -R www-data /laraMicro/storage /laraMicro/bootstrap/cache &&  chmod -R ug+rwx /laraMicro/storage /laraMicro/bootstrap/cache
-RUN chmod -R 775 storage bootstrap/cache && chmod 777 -R /laraMicro/storage /laraMicro/bootstrap/cache
+RUN  chgrp -R www-data storage bootstrap/cache &&  chmod -R ug+rwx storage bootstrap/cache
+RUN chmod -R 775 storage bootstrap/cache && chmod 777 -R storage bootstrap/cache
 
 # copy nginx configuration to container
 COPY ./app.conf /etc/nginx/sites-enabled/default
