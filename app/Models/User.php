@@ -102,7 +102,7 @@ class User extends Authenticatable implements HasMedia , Searchable
     public function scopeActive(Builder $query){
         return $query->whereActive(1);
     }
-
+   
 
     protected function data(): Attribute{
         return Attribute::make(

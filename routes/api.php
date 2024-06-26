@@ -74,5 +74,6 @@ Route::middleware(['auth:api','is_god_mode' , 'lang'])->group(function(){
     Route::post('/item-create', [ItemController::class, 'create'])->name('item-create');
     Route::post('/image-store', [ImageController::class,'store']);
     Route::get('settings' , [SettingController::class,'index']);
+    Route::post('settings' , [SettingController::class,'setSettings']);
 
 });

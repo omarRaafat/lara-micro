@@ -1,8 +1,8 @@
 FROM  php:8.2-fpm
 
-WORKDIR /laraMicro
+WORKDIR /var/www
 
-ADD . .
+# Install system dependencies
 
 RUN apt-get update && apt-get install -y mariadb-server \
 nano \
@@ -29,8 +29,6 @@ RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 RUN docker-php-ext-install gd
 
-COPY composer.json composer.lock /laraMicro/
-
 # Install composer (php package manager)
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
@@ -38,29 +36,35 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 RUN apt-get clean
 
-# install laravel dependencies and packages via composer
-RUN composer install --ignore-platform-reqs --no-interaction --no-scripts --no-progress
+# Copy existing application directory contents
+COPY . /var/www
+
+# Copy existing application directory permissions
+COPY --chown=www-data:www-data . /var/www
 
 #laravel required env file for deploying
 COPY .env.docker .env
+
+# copy nginx configuration to container
+COPY ./app.conf /etc/nginx/sites-enabled/default
+
+# Copy the entrypoint script
+COPY ./app.sh /usr/local/bin/app.sh
+
+# make shell script (cmd.sh) excutable
+RUN  chmod +x /usr/local/bin/app.sh
 
 # fix 301 forbidden permission to laravel storage and caches for read and write
 RUN  chgrp -R www-data storage bootstrap/cache &&  chmod -R ug+rwx storage bootstrap/cache
 RUN chmod -R 775 storage bootstrap/cache && chmod 777 -R storage bootstrap/cache
 
-# copy nginx configuration to container
-COPY ./app.conf /etc/nginx/sites-enabled/default
+# Change current user to www
+USER www-data
 
-# shell script to start nginx web server
-COPY /scripts/cmd.sh /usr/local/bin/cmd.sh
-
-# make shell script (cmd.sh) excutable
-RUN chmod 777 /usr/local/bin/cmd.sh && chmod +x /usr/local/bin/cmd.sh
-# generates new key for laravel env file
 
 EXPOSE 8080
 
 # Run Laravel commands script
-CMD ["/usr/local/bin/cmd.sh"]
+ENTRYPOINT ["/usr/local/bin/app.sh"]
 
 
