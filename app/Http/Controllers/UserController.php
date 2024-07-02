@@ -7,8 +7,7 @@ use App\Traits\HandleResponse;
 use Illuminate\Http\Request;
 use App\Http\Services\UserService;
 use App\Http\Requests\UserStoreRequest;
-
-
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {

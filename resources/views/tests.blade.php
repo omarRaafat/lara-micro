@@ -44,6 +44,13 @@
 <body>
 
     <div class="upload-container">
+        <div>
+            @if(session()->has('error'))
+            <span style="background-color: red;color:white">
+                {{session()->get('error')}}
+            </span>
+            @endif
+        </div>
         <h1>Upload Govermental Files (national id  - driving liscence )</h1>
         <form action="{{route('media.store')}}" method="post" enctype="multipart/form-data" id="filepond-form">
             @csrf

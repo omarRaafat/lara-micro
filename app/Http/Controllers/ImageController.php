@@ -42,6 +42,10 @@ class ImageController extends Controller
     }
 
     public function store(Request $request){
+        if(!$request->input('files'))
+            return redirect()->back()->with([
+                'error' => 'No Media File Inserted'
+            ]);
         $test = Test::query()->create();
 
         foreach($request->input('files') as $file){

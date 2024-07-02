@@ -23,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
             return new TwilioService();
         });
 
-        $this->app->singleton('settings' , function($app){
+        $this->app->singleton('settings' , function($app){ // connect settings facade class to settings service
             return new SettingsService();
         });
     }

@@ -191,7 +191,7 @@ return [
         // 'Example' => App\Facades\Example::class,
         // 'Image' => 'Intervention\\Image\\Facades\\Image',
         // 'Image' => Intervention\Image\Facades\Image::class,
-        'Settings' => Settings::class 
+        'Settings' => Settings::class //  
     ])->toArray(),
 
     'god_mode' => env('GOD_MODE',true)
