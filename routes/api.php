@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AreaController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SMSController;
@@ -76,4 +77,8 @@ Route::middleware(['auth:api','is_god_mode' , 'lang'])->group(function(){
     Route::get('settings' , [SettingController::class,'index']);
     Route::post('settings' , [SettingController::class,'setSettings']);
 
+  
+
 });
+
+Route::get('orders' , [OrderController::class , 'index'])->name('orders.index');
