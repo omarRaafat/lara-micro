@@ -21,7 +21,7 @@ use App\Http\Controllers\ImageController;
 */
 
 
-// Auth::routes();
+Auth::routes();
 
 Route::get('/demo', [DemoController::class, 'demo'])->name('demo');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -34,4 +34,4 @@ Route::controller(StripePaymentController::class)->group(function(){
     Route::get('stripe', 'stripe');
     Route::post('stripe', 'stripePost')->name('stripe.post');
 });
-Auth::routes();
+// Auth::routes();

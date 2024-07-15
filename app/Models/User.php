@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Casts\test;
+use Filament\Panel;
 use Webpatser\Uuid\Uuid;
 use App\Casts\UserActiveCast;
 use Laravel\Sanctum\HasApiTokens;
@@ -15,13 +16,14 @@ use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Models\Contracts\FilamentUser;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
-class User extends Authenticatable implements HasMedia , Searchable
+class User extends Authenticatable implements HasMedia , Searchable , FilamentUser
 {
     use HasApiTokens, HasFactory, Notifiable , HasRoles , InteractsWithMedia;
 
@@ -146,6 +148,11 @@ class User extends Authenticatable implements HasMedia , Searchable
             $this,
             $this->name
         );
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->email && $this->hasVerifiedEmail();
     }
    
 
