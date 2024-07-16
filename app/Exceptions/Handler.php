@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Throwable;
+use Exception;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -20,6 +21,9 @@ class Handler extends ExceptionHandler
         'password_confirmation',
     ];
 
+
+    
+
     /**
      * Register the exception handling callbacks for the application.
      */
@@ -34,4 +38,16 @@ class Handler extends ExceptionHandler
 
       
     }
+
+    public function report($exception)
+{
+    if (app()->bound('sentry') && $this->shouldReport($exception)){
+        app('sentry')->captureException($exception);
+    }
+
+    parent::report($exception);
+}
+
+
+
 }

@@ -25,6 +25,7 @@
         "league/flysystem-sftp": "3.0",
         "mckenziearts/laravel-notify": "^2.4",
         "owen-it/laravel-auditing": "^13.6",
+        "sentry/sentry-laravel": "^4.7",
         "simplesoftwareio/simple-qrcode": "^4.2",
         "spatie/laravel-backup": "^8.6",
         "spatie/laravel-medialibrary": "^11.4",

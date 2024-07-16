@@ -9,6 +9,7 @@ use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\RolesPermissionController;
 use App\Http\Controllers\ImageController;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -34,4 +35,9 @@ Route::controller(StripePaymentController::class)->group(function(){
     Route::get('stripe', 'stripe');
     Route::post('stripe', 'stripePost')->name('stripe.post');
 });
+
+Route::get('/debug-sentry', function () {
+    throw new Exception('My second Sentry error !!!');
+});
+
 // Auth::routes();

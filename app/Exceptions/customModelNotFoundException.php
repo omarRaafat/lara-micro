@@ -15,7 +15,6 @@ class customModelNotFoundException extends ModelNotFoundException
 
     public function render($request){
         if($request->wantsJson()){
-          
            return $this->handelResponse(
                 $this->getCode(),
                 [],
@@ -24,4 +23,7 @@ class customModelNotFoundException extends ModelNotFoundException
 
         }
     }
+
+    
+ 
 }
