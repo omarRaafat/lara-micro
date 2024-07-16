@@ -64,7 +64,7 @@ class PostRepository extends BaseRepository
     public function getPostComments($post){
         $post = $this->model->find($post);
         if(!$post)
-            throw new CustomModelNotFoundException('no post found wirth this id' , 404);
+            throw new CustomModelNotFoundException('no post found with this id to get Comments' , 404);
         return $post->comments()->get();
     }
 

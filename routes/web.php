@@ -37,7 +37,7 @@ Route::controller(StripePaymentController::class)->group(function(){
 });
 
 Route::get('/debug-sentry', function () {
-    throw new Exception('My second Sentry error !!!');
+    throw new Exception('test1');
 });
 
 // Auth::routes();

@@ -2,8 +2,9 @@
 
 namespace App\Exceptions;
 
-use Throwable;
 use Exception;
+use Throwable;
+use Sentry\State\HubInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -22,6 +23,13 @@ class Handler extends ExceptionHandler
     ];
 
 
+    protected $sentry;
+
+    public function __construct(HubInterface $sentry)
+    {
+        $this->sentry = $sentry;
+        parent::__construct(app());
+    }
     
 
     /**
