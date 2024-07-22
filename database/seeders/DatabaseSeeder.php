@@ -24,7 +24,8 @@ class DatabaseSeeder extends Seeder
             CountrySeeder::class,
             WarehouseSeeder::class,
             WarehouseAreaSeeder::class,
-            SettingSeeder::class
+            SettingSeeder::class,
+            OrderSeeder::class
         ]
         );
         // \App\Models\User::factory(10)->create();

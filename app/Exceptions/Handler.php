@@ -2,7 +2,9 @@
 
 namespace App\Exceptions;
 
+use Exception;
 use Throwable;
+use Sentry\State\HubInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -20,6 +22,16 @@ class Handler extends ExceptionHandler
         'password_confirmation',
     ];
 
+
+    protected $sentry;
+
+    public function __construct(HubInterface $sentry)
+    {
+        $this->sentry = $sentry;
+        parent::__construct(app());
+    }
+    
+
     /**
      * Register the exception handling callbacks for the application.
      */
@@ -34,4 +46,16 @@ class Handler extends ExceptionHandler
 
       
     }
+
+    public function report($exception)
+{
+    if (app()->bound('sentry') && $this->shouldReport($exception)){
+        app('sentry')->captureException($exception);
+    }
+
+    parent::report($exception);
+}
+
+
+
 }

@@ -7,7 +7,8 @@ use App\Http\Controllers\DemoController;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\RolesPermissionController;
-use App\Http\Controllers\TestController;
+use App\Http\Controllers\ImageController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -21,16 +22,22 @@ use App\Http\Controllers\TestController;
 */
 
 
-// Auth::routes();
+Auth::routes();
 
 Route::get('/demo', [DemoController::class, 'demo'])->name('demo');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::resource('tests' , TestController::class);
-Route::post('process' , [TestController::class , 'upload']);
-Route::delete('revert' , [TestController::class , 'revert']);
+Route::resource('media' , ImageController::class);
+Route::post('process' , [ImageController::class , 'proccess']); // FILEPOND
+Route::delete('revert' , [ImageController::class , 'revert']); // FILEPOND
+Route::get('restore' , [ImageController::class , 'restore']); // FILEPOND
 
 Route::controller(StripePaymentController::class)->group(function(){
     Route::get('stripe', 'stripe');
     Route::post('stripe', 'stripePost')->name('stripe.post');
 });
-Auth::routes();
+
+Route::get('/debug-sentry', function () {
+    throw new Exception('test1');
+});
+
+// Auth::routes();

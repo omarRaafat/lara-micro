@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Facades\Settings;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
 
@@ -167,6 +168,7 @@ return [
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
+        App\Providers\Filament\AdminPanelProvider::class,
         App\Providers\RouteServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
         // Intervention\Image\ImageServiceProvider::class,
@@ -190,6 +192,7 @@ return [
         // 'Example' => App\Facades\Example::class,
         // 'Image' => 'Intervention\\Image\\Facades\\Image',
         // 'Image' => Intervention\Image\Facades\Image::class,
+        'Settings' => Settings::class //  
     ])->toArray(),
 
     'god_mode' => env('GOD_MODE',true)

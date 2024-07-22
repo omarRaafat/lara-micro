@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\Services\SettingsService;
 use App\Models\User;
 use App\Models\Setting;
 use App\Observers\UserObserver;
@@ -21,6 +22,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(TwilioService::class, function ($app) {
             return new TwilioService();
         });
+
+        $this->app->singleton('settings' , function($app){ // connect settings facade class to settings service
+            return new SettingsService();
+        });
     }
 
     /**
@@ -30,6 +35,7 @@ class AppServiceProvider extends ServiceProvider
     {
         User::observe(new UserObserver());
       
+        Cache::forget('settings');  
              Cache::rememberForever('settings' , function(){
                 if(Schema::hasTable('settings'))
                     return Setting::pluck('value' , 'key');

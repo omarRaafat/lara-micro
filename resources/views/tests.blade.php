@@ -39,16 +39,24 @@
         }
     </style>
      <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
+     <script src="{{asset('js/CacheStorage.js')}}"> </script>
 </head>
 <body>
 
     <div class="upload-container">
-        <h1>Upload Files</h1>
-        <form action="{{route('tests.store')}}" method="post" enctype="multipart/form-data">
+        <div>
+            @if(session()->has('error'))
+            <span style="background-color: red;color:white">
+                {{session()->get('error')}}
+            </span>
+            @endif
+        </div>
+        <h1>Upload Govermental Files (national id  - driving liscence )</h1>
+        <form action="{{route('media.store')}}" method="post" enctype="multipart/form-data" id="filepond-form">
             @csrf
             <input type="file" name="files[]" multiple id="" >
             <br>
-            <button type="submit" style="background-color: green">Submit</button>
+            <button onclick="submit()" type="button" style="background-color: green">Submit</button>
          
         </form>
     </div>
@@ -59,27 +67,60 @@
 
         const filesInput = document.querySelector('input[type="file"]');
         const token  = '{{csrf_token()}}';
+        const cacheStorage = new CacheStorage('tmp');
+        let tmpFiles = cacheStorage.get();
+        const formElement = document.getElementById('filepond-form')
+        const forceClearCache = "{{session()->pull('forceClearCache')}}"
+
+        if(forceClearCache){
+            cacheStorage.clear()
+            tmpFiles = []
+        }
 
         FilePond.setOptions({
                 server: {
 
                     process: {
-                    url: '/process',
+                        url: '{{url('/process')}}',
+                        onload: (path) => cache(path)
+                    } ,
+                    revert: '{{url('/revert')}}' ,
+                    restore: '{{url('/restore?path=')}}' ,
                     headers: {
                         'X-CSRF-TOKEN': token
                         }
-                    },
-                    revert: {
-                    url: '/revert',
-                    headers: {
-                        'X-CSRF-TOKEN': token
-                        }
-                    },
+                    
 
-            }
+                }
+
+            
         });
 
-        const pond  = FilePond.create(filesInput , {allowMultiple:true})
+        const pond  = FilePond.create(filesInput , {
+            allowMultiple:true,
+            files: tmpFiles 
+        })
+        const cache = (path) => {
+            tmpFiles.unshift({
+                source: path,
+                options: {
+                    type: 'limbo',
+                }
+            })
+
+            cacheStorage.set(tmpFiles)
+            return path;
+        }
+
+        document.addEventListener('FilePond:processfilerevert' , (response) => {
+            const serverId = response.detail.file.serverId
+            tmpFiles = tmpFiles.filter(tmpFile=> tmpFile.source !== serverId)
+            cacheStorage.set(tmpFiles)
+        })
+
+        function submit(){
+            formElement.submit();
+        }
 
     </script>
 

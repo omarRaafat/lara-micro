@@ -22,14 +22,21 @@ services:
       dockerfile: Dockerfile
     image: omar2023/lara101:latest  # this is a tag for the docker file image php8.1-fpm
     container_name: laraMicroApp
+    restart: unless-stopped
+    working_dir: /var/www
+    environment:
+      - COMPOSER_ALLOW_SUPERUSER=1
     links:
       - mysql
     depends_on:
       - mysql
     ports:
       - 8080:80  
+    volumes:
+      - ./:/var/www 
     networks:
       - laraMicroNetwork
+    # entrypoint: ["sh"  , "-c" , "php artisan key:generate"]  
 
 networks:
   laraMicroNetwork:
