@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Exception;
 use Throwable;
 use Sentry\State\HubInterface;
+use Illuminate\Auth\AuthenticationException;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -25,11 +26,11 @@ class Handler extends ExceptionHandler
 
     protected $sentry;
 
-    public function __construct(HubInterface $sentry)
-    {
-        $this->sentry = $sentry;
-        parent::__construct(app());
-    }
+    // public function __construct(HubInterface $sentry)
+    // {
+    //     $this->sentry = $sentry;
+    //     parent::__construct(app());
+    // }
     
 
     /**
@@ -47,6 +48,25 @@ class Handler extends ExceptionHandler
       
     }
 
+     protected function unauthenticated($request, AuthenticationException $exception)
+    {
+
+        if ($request->is('admin/*')) {
+            return redirect()->guest('/admin/login');
+        }
+
+        if ($request->expectsJson()) {
+            // Customize the JSON response
+            return response()->json(['message' => 'You are not authenticated. Please log in.!'], 401);
+        }
+
+        
+
+      
+    }
+
+   
+
     public function report($exception)
 {
     if (app()->bound('sentry') && $this->shouldReport($exception)){
@@ -55,6 +75,8 @@ class Handler extends ExceptionHandler
 
     parent::report($exception);
 }
+
+
 
 
 

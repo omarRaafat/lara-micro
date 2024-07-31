@@ -6,6 +6,7 @@ use App\Filament\Resources\PostResource\Pages;
 use App\Filament\Resources\PostResource\RelationManagers;
 use App\Models\Post;
 use Filament\Forms;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -24,10 +25,15 @@ class PostResource extends Resource
     {
         return $form
             ->schema([
-                Tables\Columns\TextColumn::make('user_id')->searchable(),
-                TextColumn::make('body'),
-                TextColumn::make('visitor'),
-                TextColumn::make('views')
+                Forms\Components\TextInput::make('author_name')
+                ->label('Author Name')
+                ->formatStateUsing(fn ($record) => $record?->user?->name)
+                ->disabled(fn (string $context): bool => $context === 'edit'),
+                Forms\Components\Textarea::make('body')
+                ->required()
+                ->label('Body'),
+                TextInput::make('visitor'),
+                TextInput::make('views')
             ]);
     }
 
@@ -35,13 +41,32 @@ class PostResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('id'),
+                TextColumn::make('user.name')->label('Writer')->searchable(),
+                TextColumn::make('views'),
+                TextColumn::make('visitor'),
+                TextColumn::make('is_approved')
+                            ->label('Approval')
+                            ->color(fn($record) => $record->is_approved == 'Pending' ? 'green' : 'orange')
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make(),
+
+                Tables\Actions\Action::make('Post Approval')
+                ->label('Approve')
+                ->action(function ($record) {
+                    $record->update(['is_approved' => 1]); 
+                })
+                ->icon('heroicon-o-check')
+                ->requiresConfirmation()
+                ->color('success')
+                ->visible(fn($record) => $record->is_approved == 'Pending')
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

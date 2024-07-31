@@ -40,4 +40,7 @@ Route::get('/debug-sentry', function () {
     throw new Exception('test1');
 });
 
+
+
+
 // Auth::routes();

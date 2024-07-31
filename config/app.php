@@ -175,6 +175,7 @@ return [
         // 'Intervention\\Image\\ImageServiceProvider',
         Spatie\Backup\BackupServiceProvider::class,
         Cviebrock\EloquentSluggable\ServiceProvider::class,
+        Sentry\Laravel\ServiceProvider::class,
     ])->toArray(),
 
     /*
