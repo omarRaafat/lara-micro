@@ -23,13 +23,13 @@ class Handler extends ExceptionHandler
     ];
 
 
-    protected $sentry;
+    // protected $sentry;
 
-    public function __construct(HubInterface $sentry)
-    {
-        $this->sentry = $sentry;
-        parent::__construct(app());
-    }
+    // public function __construct(HubInterface $sentry)
+    // {
+    //     $this->sentry = $sentry;
+    //     parent::__construct(app());
+    // }
     
 
     /**

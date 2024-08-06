@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->app->singleton('settings' , function($app){ // connect settings facade class to settings service
-            return new SettingsService();
+            return new SettingsService(); // calling settings service constructor
         });
     }
 
