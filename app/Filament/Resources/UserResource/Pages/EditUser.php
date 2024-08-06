@@ -17,4 +17,8 @@ class EditUser extends EditRecord
             Actions\EditAction::make(),
         ];
     }
+
+    protected function getRedirectUrl(): string|null{
+        return $this->getResource()::getUrl('index');
+    }
 }

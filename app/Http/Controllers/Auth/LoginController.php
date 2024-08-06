@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Auth;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Traits\HandleResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
@@ -21,7 +24,7 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+    use AuthenticatesUsers , HandleResponse;
 
     /**
      * Where to redirect users after login.
@@ -42,18 +45,18 @@ class LoginController extends Controller
 
     function login(Request $request)
     {
-        $user= User::whereEmail($request->email)->firstOrFail();
-       
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            return response([
+          
+        if (!Auth::attempt($request->only('email' , 'password'))) {
+            throw ValidationException::withMessages([
                 'message' => ['These credentials do not match our records.']
-            ], 401);
+            ]);
         }
 
-        $token = $user->createToken($user->id.'-'.$user->email.'-user-token')->plainTextToken;
+        $user =  Auth::guard('api')->user();
+        $token = Auth::guard('api')->user()->createToken(rand(0,100).'-user-token')->plainTextToken;
 
         $response = [
-            'user' => $user,
+            'user' => $user,  // return user info with token
             'token' => $token
         ];
 
@@ -61,6 +64,7 @@ class LoginController extends Controller
     }
 
     public function logout(){
+        
         auth()->user()->tokens()->delete();
     
         return response()->json([

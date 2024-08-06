@@ -25,7 +25,8 @@ class DatabaseSeeder extends Seeder
             WarehouseSeeder::class,
             WarehouseAreaSeeder::class,
             SettingSeeder::class,
-            OrderSeeder::class
+            OrderSeeder::class,
+            PostSeeder::class
         ]
         );
         // \App\Models\User::factory(10)->create();

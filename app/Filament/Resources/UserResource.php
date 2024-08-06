@@ -54,11 +54,10 @@ class UserResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('id')->searchable(),
-                TextColumn::make('name')->searchable(),
+                TextColumn::make('name')->searchable()->sortable(),
                 TextColumn::make('email')->searchable(),
                 ToggleColumn::make('active')->inline(true),
-                
-                
+                TextColumn::make('posts_count')->label('Num_Posts')->counts('posts'),
                 TextColumn::make('uuid')->searchable(),
                 SpatieMediaLibraryImageColumn::make('profile_image')->collection('profile_image')
             ])
@@ -75,6 +74,12 @@ class UserResource extends Resource
                 ]),
             ]);
     }
+
+    // public static function afterSave($record){
+
+    //     $record->update(['active'=>1]);
+
+    // }
 
     public static function getRelations(): array
     {
